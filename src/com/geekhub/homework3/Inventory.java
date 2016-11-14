@@ -11,7 +11,7 @@ class Inventory extends Main {
         }
     static void deleteData() {
         Scanner s = new Scanner(System.in);
-        System.out.println("Enter the item for deleting");
+        System.out.println("Enter the name for deleting");
         String name1 = s.nextLine();
         int index = name.indexOf(name1);
         type.remove(index);
