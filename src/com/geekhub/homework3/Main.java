@@ -3,8 +3,11 @@ package com.geekhub.homework3;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-class InputProducts {
+class Main {
+    static final List<String> type = new ArrayList<>();
     static final List<String> name = new ArrayList<>();
     static final List<Integer> quantity = new ArrayList<>();
     static final List<Double> price = new ArrayList<>();
@@ -12,7 +15,7 @@ class InputProducts {
     public static void main(String[] args) {
             inputCommand();
     }
-    private static void inputCommand() {
+    static void inputCommand() {
         Scanner s = new Scanner(System.in);
         System.out.println("Enter 'p' for addition new item of product or 'd' for deleting existing item.");
         String command = s.nextLine();
@@ -22,63 +25,46 @@ class InputProducts {
         if(command.equals("d")) {
             Inventory.deleteData();
         }
+        else{
+            inputCommand();
+        }
     }
     private static void inputName() {
         Scanner s = new Scanner(System.in);
-        System.out.println("Enter the name of product, 'Cheese', 'Rom' or 'Whiskey'");
-        String name1 = s.nextLine();
-        switch (name1) {
-            case "Cheese":
-                name.add(name1);
-                inputQuantity();
-                break;
+        System.out.println("Enter the type of product, 'Cheese', 'Rom' or 'Whiskey':");
+        String type1 = s.nextLine();
+        Scanner s1 = new Scanner(System.in);
+        System.out.println("Enter the name of product:");
+        String name1 = s1.nextLine();
+        Pattern p = Pattern.compile("Cheese \\D*||Rom \\D*||Whiskey \\D*");
+        Matcher m = p.matcher(type1+" "+name1);
+        if (m.matches()){
+            type.add(type1);
+            name.add(name1);
+            System.out.println(type+""+name);
+            inputQuantity();
         }
-        switch (name1) {
-            case "Rom":
-                name.add(name1);
-                inputQuantity();
-                break;
-        }
-        switch (name1) {
-            case "Whiskey":
-                name.add(name1);
-                inputQuantity();
-                break;
-            default:
-                System.out.println("Wrong name, enter correct one!");
-                inputCommand();
-                break;
+        else{
+            System.out.println("Wrong name!");
+            inputCommand();
         }
     }
     private static void inputQuantity() {
         Scanner s1 = new Scanner(System.in);
-        System.out.println("Enter the quantity of these product");
+        System.out.println("Enter the quantity of this product");
         int quantity1 = s1.nextInt();
-        if (quantity1 > 0) {
-            quantity.add(quantity1);
-            inputPrice();
-        } else {
-            inputParamAlert();
-            inputQuantity();
-        }
+        quantity.add(quantity1);
+        inputPrice();
     }
     private static void inputPrice(){
         Scanner s2 = new Scanner(System.in);
         System.out.println("Enter the price");
         double price1 = s2.nextDouble();
-        if (price1 > 0){
-        price.add(price1);}
-        else{
-            inputParamAlert();
-            inputPrice();
-        }
+        price.add(price1);
         Product products = new Product();
         products.showProducts();
         Inventory.sumOfPrices();
         inputCommand();
-    }
-    private static void inputParamAlert(){
-        System.out.println("Enter correct parameters!");
     }
     }
 
